@@ -1,0 +1,65 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+<meta name="_csrf" content="${_csrf.token}"/>
+<meta name="_csrf_header" content="${_csrf.headerName}"/>
+<title>${pageTitle}</title>
+<!-- reference our style sheet -->
+<link type="text/css" rel="stylesheet"
+	href="${pageContext.request.contextPath}/resources/css/style.css" />
+<link href="http://fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
+<link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
+<link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body class="bg-gray">
+<div class="bg-secondary">
+<hr color="blue"/>
+<h3>Σύστημα διαχείρισης αιτήσεων σίτισης</h3>
+<hr color="blue"/>
+	<header class="navbar">
+	<div class="navbar-primar">
+	
+		<sec:authorize access="hasRole('ROLE_ADMIN')">
+			<a href="${pageContext.request.contextPath}/student/list" class="btn btn-link">Φοιτητές</a>
+			<a href="${pageContext.request.contextPath}/employee/list" class="btn btn-link">Προσωπικό</a>
+			<a href="${pageContext.request.contextPath}/department/list" class="btn btn-link">Τμήματα</a>
+			<!-- <a href="${pageContext.request.contextPath}/user/list" class="btn btn-link">Χρήστες</a>  -->
+			<a href="${pageContext.request.contextPath}/role/list" class="btn btn-link">Ρόλοι</a>		
+			<a href="${pageContext.request.contextPath}/service/list" class="btn btn-link">Υπηρεσίες</a>
+		</sec:authorize>
+		
+		<sec:authorize access="hasRole('ROLE_STUDENT')">
+			<a href="${pageContext.request.contextPath}/studentApplication/createStudentApplication/${pageContext.request.remoteUser}" class="btn btn-link">Αίτηση</a>
+		</sec:authorize>
+		
+		<sec:authorize access="hasRole('ROLE_EMPLOYEE')">
+			<a href="${pageContext.request.contextPath}/student/listByDepartmentSupervisor/${pageContext.request.remoteUser}" class="btn btn-link">Φοιτητές/Αιτήσεις</a>
+		</sec:authorize>
+		
+		<sec:authorize access="hasRole('ROLE_EMPLO_MANAGER')">
+			<a href="${pageContext.request.contextPath}/employee/list" class="btn btn-link">Προσωπικό</a>
+			<a href="${pageContext.request.contextPath}/department/list" class="btn btn-link">Τμήματα</a>
+			<a href="${pageContext.request.contextPath}/studentApplication/list-results" class="btn btn-link">Έκδοση αποτελεσμάτων</a>
+		</sec:authorize>
+		
+		<sec:authorize access="isAuthenticated()">
+			<a class="btn btn-link" name="logout-nav">Έξοδος</a>
+		</sec:authorize>
+		
+		<sec:authorize access="isAuthenticated()==false">
+			<b>Είσοδος στο σύστημα</b>
+		</sec:authorize>
+	</div>
+	</header>
+<hr/>
+</div>
+	<div class="container">
